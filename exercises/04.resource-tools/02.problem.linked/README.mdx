@@ -1,0 +1,40 @@
+# Linked Resources
+
+👨‍💼 You've already made your resources discoverable and accessible—now let's make
+them even more useful! In this step, you'll learn how to link a resource
+directly in your tool responses.
+
+Why does this matter? Sometimes, an embedded resource is more content than is
+necessary for a tool's output. It could be a whole video potentially. By linking
+to resource references, you enable clients (and LLMs) to decide whether they
+want to follow links to additional context, download files, subscribe to updates,
+or fetch related data on demand.
+
+Your goal in this step:
+
+- Update the `list_entries` and `list_tags` tools so when they create a tag or
+  entry, we tell them it was created and also include a reference to the tag or
+  entry (using the `type: 'resource_link'` content type in the response).
+- Make sure the resource includes the correct URI and metadata, so clients can
+  easily fetch the resource if they want more details.
+
+This pattern unlocks powerful workflows—tools and resources working together to
+provide richer, more actionable results.
+
+Here's an example of the content type if we were to link to a taco ingredient
+resource:
+
+```json
+{
+	"type": "resource_link",
+	"uri": "taco://ingredients/1",
+	"name": "Lettuce",
+	"description": "A delicious lettuce ingredient",
+	"mimeType": "application/json"
+}
+```
+
+To test this out, check the response from `list_entries` and `list_tags` and
+notice the resource is included in the response.
+
+- 📜 [MCP Spec: Tools (Resource Links)](https://modelcontextprotocol.io/specification/2025-06-18/server/tools#resource-links)

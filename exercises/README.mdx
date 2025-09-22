@@ -1,0 +1,62 @@
+# MCP Fundamentals 🧱
+
+<EpicVideo
+	title="Intro to MCP Fundamentals"
+	url="https://www.epicai.pro/workshops/day-1-setup-intro-and-tools/intro-i51jf"
+/>
+
+👨‍💼 Hello, my name is Peter the Product Manager. I'm here to help you get
+oriented and to give you your assignments for the workshop!
+
+Welcome to **MCP Fundamentals**! In this workshop, you'll dive into the world of
+the
+[Model Context Protocol (MCP)](https://modelcontextprotocol.io/specification/2025-06-18)—an
+open protocol designed to seamlessly connect AI models with external data
+sources and tools. Think of MCP as the "USB-C port" for AI applications: it
+standardizes how LLMs (Large Language Models) access context, resources, and
+capabilities from a wide variety of sources.
+
+```mermaid
+flowchart LR
+    subgraph "Your Computer"
+        Host["Host with MCP Client<br/>(Claude, IDEs, Tools)"]
+        S1["MCP Server A"]
+        S2["MCP Server B"]
+        D1[("Local<br/>Data Source A")]
+        Host <-->|"MCP Protocol"| S1
+        Host <-->|"MCP Protocol"| S2
+        S1 <--> D1
+    end
+    subgraph "Internet"
+        S3["MCP Server C"]
+        D2[("Remote<br/>Service B")]
+        D3[("Remote<br/>Service C")]
+        S2 <--> D2
+        S3 <--> D3
+    end
+    Host <-->|"MCP Protocol"| S3
+```
+
+Throughout this workshop, you'll learn:
+
+- The core architecture of MCP: **hosts**, **clients**, and **servers**
+  ([see architecture](https://modelcontextprotocol.io/specification/2025-06-18/architecture))
+- How JSON-RPC powers communication and stateful sessions between components
+- How to expose resources, prompts, and tools to LLMs using MCP
+
+We'll focus on the fundamentals—no authentication or authorization required for
+our exercises—so you can get hands-on experience with the protocol's most
+important features.
+
+We'll be using the
+[MCP TypeScript SDK](https://github.com/modelcontextprotocol/typescript-sdk)
+to build our MCP server and the
+[MCP Inspector](https://github.com/modelcontextprotocol/inspector) to test it.
+
+If you're curious about the details, I highly recommend checking out the
+[official MCP specification](https://modelcontextprotocol.io/specification/2025-06-18)
+and the [introduction](https://modelcontextprotocol.io/introduction). These
+resources provide a deep dive into the protocol, its design principles, and
+practical implementation tips.
+
+Ready to connect your AI to the world? Let's get started!

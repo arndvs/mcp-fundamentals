@@ -1,0 +1,99 @@
+# Ping
+
+<EpicVideo url="https://www.epicai.pro/workshops/day-1-setup-intro-and-tools/ping-connect~z2r7d/solution" />
+
+👨‍💼 Great job! Now we know we've got an MCP server up and running. From here we
+can start adding a bunch of different tools, resources, and more to it.
+
+<details>
+<summary>🦉 What the StdioServerTransport does</summary>
+
+The `StdioServerTransport` is a simple transport that allows you to connect to
+your MCP server using the command line. It's a good way to get started and
+understand how MCP servers work.
+
+The MCP Client takes the `command` and `args` you configure and spawns a child
+process:
+
+```ts
+import { spawn } from 'child_process'
+
+// these come from our config in the MCP Inspector:
+const command = 'npm'
+const args = [
+	'--silent',
+	'--prefix',
+	'/Users/kody/code/mcp-fundamentals',
+	'run',
+	'dev:mcp',
+]
+
+// Then the MCP client spawns a child process:
+const child = spawn(command, args)
+```
+
+Once started, the client and server communicate by sending and receiving messages through standard input and output (stdio). These messages follow the JSON-RPC format, which is a standard way to structure requests and responses.
+
+### Example: Ping Request and Response
+
+Suppose the client wants to check if the server is running. It sends a `ping` request to the server by writing a line of JSON to the server's standard input:
+
+```json
+{ "jsonrpc": "2.0", "id": "123", "method": "ping" }
+```
+
+The server reads this line from its standard input, processes the request, and writes a response to its standard output:
+
+```json
+{ "jsonrpc": "2.0", "id": "123", "result": {} }
+```
+
+This is a typical request-response cycle:
+
+- The **client** writes a request (like `ping`) to the server's stdin.
+- The **server** reads the request, processes it, and writes a response to stdout.
+- The **client** reads the response from the server's stdout.
+
+Here's a simplified TypeScript example of how this might look in code:
+
+```ts
+// Client sends a ping request
+child.stdin.write(
+	JSON.stringify({ jsonrpc: '2.0', id: '123', method: 'ping' }) + '\n',
+)
+
+// Client listens for the response
+child.stdout.on('data', (data) => {
+	console.log('Received from server:', data.toString())
+	// Should log: {"jsonrpc": "2.0", "id": "123", "result": {}}
+})
+```
+
+> **Note:** Each message is typically sent as a single line of JSON, so a newline character (`\n`) is used to separate messages.
+
+#### ⚠️ What happens if you use `console.log` for logging?
+
+If your server uses `console.log` for regular logging, those log messages will be sent to standard output (stdout) along with your protocol messages. This can confuse the client, which expects only valid JSON-RPC messages on stdout.
+
+For example, if your server does this:
+
+```ts
+console.log('Server started!')
+```
+
+Then the output on stdout might look like:
+
+```
+Server started!
+{"jsonrpc": "2.0", "id": "123", "result": {}}
+```
+
+When the client tries to read and parse the response, it will encounter the plain text `Server started!` and likely throw a parsing error, because it expects only JSON.
+
+That's why you should use `console.error` for logging and debugging output. Standard error (stderr) is separate from stdout, so log messages won't interfere with the protocol communication.
+
+Other transport mechanisms exist as well, and while the code for them is
+different the underlying concept is the same: a server and client
+communicating with each other using a standard protocol.
+
+</details>

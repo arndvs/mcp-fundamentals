@@ -1,0 +1,24 @@
+# Ping
+
+<EpicVideo url="https://www.epicai.pro/workshops/day-1-setup-intro-and-tools/ping-connect~z2r7d" />
+
+👨‍💼 Let's get our MCP server running. The TypeScript SDK for MCP supports `ping`
+out of the box, so all we need to do is initialize the server, set up a
+transport for it, and then it should respond to `ping` requests.
+
+<callout-info>
+	ℹ️ NOTE: When initializing your MCP server, you'll need to provide `name` and
+	`version` fields. The `name` is a human-readable identifier for your server
+	(for example, `MyProductName`), and the `version` indicates the version of
+	your server (such as `1.0.0`). These fields help clients and tools identify
+	and interact with your server correctly, and are required by the MCP
+	specification.
+</callout-info>
+
+Start in <InlineFile file="src/index.ts" /> and follow the instructions in the
+comments.
+
+Right now if you try to run the server, you'll get an error. Let's fix that!
+
+- 📜 [MCP TypeScript SDK Docs](https://github.com/modelcontextprotocol/typescript-sdk)
+- 📜 [MCP Spec: Ping](https://modelcontextprotocol.io/specification/2025-06-18/basic/utilities/ping)

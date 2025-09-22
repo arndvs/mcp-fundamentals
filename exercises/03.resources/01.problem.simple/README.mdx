@@ -1,0 +1,46 @@
+# Resources
+
+👨‍💼 Our users really want to include their tags in the context as they write
+their journal entries. They could just ask the LLM to run the `list_tags` tool,
+but that's not as efficient. In fact, the host application they're using could
+proactively request the resources we expose without any input from the user as
+well. Making it both efficient and convenient for the user.
+
+In this step, you'll take your first step toward exposing structured data from
+your server—not just as tool responses, but as first-class resources that
+clients can discover and read.
+
+Your goal:
+
+- Declare the `resources` capability on your server.
+- Register a simple resource called "tags" that provides information about all
+  the tags in the database. This resource should be available at the URI
+  `epicme://tags` and return a JSON array of tags.
+
+This is your first taste of the MCP resources system. No need for dynamic
+templates or database integration yet—just get a static resource registered and
+returning a simple value.
+
+Here's an example of a resource:
+
+```ts
+agent.server.registerResource(
+	'hello',
+	'hello://world',
+	{
+		title: 'Hello',
+		description: 'A simple hello world resource',
+	},
+	async (uri) => {
+		return {
+			contents: [
+				{
+					mimeType: 'text/plain',
+					text: 'Hello, world!',
+					uri: uri.toString(),
+				},
+			],
+		}
+	},
+)
+```
