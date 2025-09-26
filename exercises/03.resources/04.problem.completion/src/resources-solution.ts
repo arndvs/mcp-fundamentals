@@ -32,9 +32,12 @@ export async function initializeResources(agent: EpicMeMCP) {
 				// 🐨 accept a value 
 				async id(value) {
 					// 💰 const tags = await agent.db.getTags()
+				// 💰 const tags = await agent.db.getTags()
 					const tags = await agent.db.getTags()
 					//and return an array of strings of ids that include the value
-					return tags.map((tag) => tag.id.toString())
+					return tags
+					.map((tag) => tag.id.toString())
+					.filter((id) => id.includes(value))
 				},
 			},
 		
@@ -75,6 +78,13 @@ export async function initializeResources(agent: EpicMeMCP) {
 			// 🐨 add a `complete` callback for the `id` parameter
 			// 🐨 accept a value and return an array of strings of ids that include the value
 			// 💰 const entries = await agent.db.getEntries()
+			complete: {
+				async id(value) {
+					const entries = await agent.db.getEntries()
+					return entries.map((entry) => entry.id.toString())
+					.filter((id) => id.includes(value))
+				},
+			},
 		}),
 		{
 			title: 'Journal Entry',
